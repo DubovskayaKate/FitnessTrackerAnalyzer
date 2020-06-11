@@ -29,7 +29,7 @@
             <MenuItem Header="Help" ></MenuItem>
             <MenuItem Header="About" ></MenuItem>
         </Menu>
-        <DataGrid Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False" ItemsSource="{DynamicResource ResourceKey=Users}">
+        <DataGrid Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False"  >
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True" Width="60"/>
                 <DataGridTextColumn Binding="{Binding BestStepResult}" Header="Best Result" IsReadOnly="True" Width="60"/>
@@ -37,10 +37,6 @@
                 <DataGridTextColumn Binding="{Binding AverageSteps}" Header="Average" IsReadOnly="True" Width="*"/>
             </DataGrid.Columns>
 
-            <DataGrid.Resources>
-                <collections:ArrayList x:Key="Users">
-                </collections:ArrayList>
-            </DataGrid.Resources>
         </DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
             <Label HorizontalAlignment="Center" Margin ="15 10 10 15" Content="Some info about"></Label>
