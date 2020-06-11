@@ -11,5 +11,11 @@ namespace FitnessTrackerAnalyzer
         {
             InitializeComponent();
         }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Кнопка нажата");
+        }
     }
+
 }
