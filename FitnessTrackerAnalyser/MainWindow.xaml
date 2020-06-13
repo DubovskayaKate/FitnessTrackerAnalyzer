@@ -46,7 +46,8 @@
 
         </DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-            <Label HorizontalAlignment="Center" Margin ="15 10 10 15" Content="Some info about"></Label>
+            <Label HorizontalAlignment="Center" Margin ="15 10 0 15" Content="Info about:"></Label>
+            <TextBlock HorizontalAlignment="Center" Name="TextBox" Text="{Binding Path=UserName}"></TextBlock>
             <oxy:Plot Height="300">
                 <oxy:LineSeries Color="Blue" MarkerFill="SteelBlue"
                                 ItemsSource="{Binding Path=TrainingResultPoint}" MarkerType="Circle" 
@@ -55,7 +56,7 @@
                 <oxy:LineSeries Color="DarkGreen" ItemsSource="{Binding Path=AverageSteps}" 
                                 DataFieldX="X" DataFieldY="Y" />
 
-                <oxy:LineSeries Color="Transparent" MarkerFill="DarkRed" 
+                <oxy:LineSeries Color="Transparent" MarkerFill="DarkOrange" 
                                 MarkerType="Circle" ItemsSource="{Binding Path=MaxStepsPoints}"
                                 DataFieldX="X" DataFieldY="Y" />
                 <oxy:LineSeries Color="Transparent" MarkerFill="Purple" 
