@@ -1,5 +1,6 @@
 ﻿<Window x:Class="FitnessTrackerAnalyzer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -29,8 +30,8 @@
             <MenuItem Header="Help" ></MenuItem>
             <MenuItem Header="About" ></MenuItem>
         </Menu>
-        <DataGrid x:Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False"  
-                  SelectedItem="{Binding SelectedRow, Mode=TwoWay}" >
+        <DataGrid x:Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False" ItemsSource="{Binding Users}"  
+                  SelectedItem="{Binding SelectedUser}" >
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True" Width="60"/>
                 <DataGridTextColumn Binding="{Binding BestStepResult}" Header="Best Result" IsReadOnly="True" Width="60"/>
@@ -46,7 +47,21 @@
         </DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
             <Label HorizontalAlignment="Center" Margin ="15 10 10 15" Content="Some info about"></Label>
-            <Canvas  Background="DarkCyan" Margin ="15 10 10 15" Height="300" ></Canvas>
+            <oxy:Plot Height="300">
+                <oxy:LineSeries Color="Blue" MarkerFill="SteelBlue"
+                                ItemsSource="{Binding Path=TrainingResultPoint}" MarkerType="Circle" 
+                                DataFieldX="X" DataFieldY="Y" />
+
+                <oxy:LineSeries Color="DarkGreen" ItemsSource="{Binding Path=AverageSteps}" 
+                                DataFieldX="X" DataFieldY="Y" />
+
+                <oxy:LineSeries Color="Transparent" MarkerFill="DarkRed" 
+                                MarkerType="Circle" ItemsSource="{Binding Path=MaxStepsPoints}"
+                                DataFieldX="X" DataFieldY="Y" />
+                <oxy:LineSeries Color="Transparent" MarkerFill="Purple" 
+                                MarkerType="Circle" ItemsSource="{Binding Path=MinStepsPoints}" 
+                                DataFieldX="X" DataFieldY="Y" />
+            </oxy:Plot>
         </StackPanel>
     </Grid>
 </Window>

@@ -10,23 +10,24 @@ namespace FitnessTrackerAnalyzer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private UserInfoViewModel DataView { get; set; }
+        private UserInfoViewModel DataViewModel { get; set; }
 
         private UserInfo SelectedRow { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            DataView = new UserInfoViewModel();
-            DataGrid.ItemsSource = DataView.Users;
-            DataGrid.SelectedItem = DataView.SelectedUser;
+            DataViewModel = new UserInfoViewModel();
+            DataContext = DataViewModel;
+            //DataGrid.ItemsSource = DataViewModel.Users;
+            //DataGrid.SelectedItem = DataViewModel.SelectedUser;
 
         }
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            DataView.Users.AddRange(UserInfoImporter.Load(new List<string>{"TestData/day1.json", "TestData/day2.json"}));
+            DataViewModel.Users = UserInfoImporter.Load(new List<string>{"TestData/day1.json", "TestData/day2.json"});
 
-            DataGrid.Items.Refresh();
+            //DataGrid.Items.Refresh();
         }
 
         private void RowCopyCommand(object sender, RoutedEventArgs e)
