@@ -10,7 +10,7 @@ namespace FitnessTrackerAnalyzer.Model
         {
             try
             {
-                var formatter = new XmlSerializer(typeof(UserTrainingDescription));
+                var formatter = new XmlSerializer(typeof(UserInfo));
 
                 using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
                 {

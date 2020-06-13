@@ -28,7 +28,7 @@ namespace FitnessTrackerAnalyzer.Model
             return list;
         }
 
-        public static List<UserInfo> Load(List<string> fileNames)
+        public static List<UserInfo> Load(string[] fileNames)
         {
             var listOfTrainingDescription= new List<UserTrainingDescription>();
             foreach (var fileName in fileNames)

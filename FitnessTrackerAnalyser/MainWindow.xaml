@@ -32,6 +32,15 @@
         </Menu>
         <DataGrid x:Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False" ItemsSource="{Binding Users}"  
                   SelectedItem="{Binding SelectedUser}" >
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ShouldHighlight}" Value="true">
+                            <Setter Property="Background" Value="YellowGreen"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True" Width="60"/>
                 <DataGridTextColumn Binding="{Binding BestStepResult}" Header="Best Result" IsReadOnly="True" Width="60"/>
@@ -40,29 +49,25 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Copy" Name="MenuItem" Click="RowCopyCommand" />
+                    <MenuItem Header="Save" Name="SaveMenuItem" Click="SaveMenuItem_Click" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
 
         </DataGrid>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-            <Label HorizontalAlignment="Center" Margin ="15 10 0 15" Content="Info about:"></Label>
-            <TextBlock HorizontalAlignment="Center" Name="TextBox" Text="{Binding Path=UserName}"></TextBlock>
-            <oxy:Plot Height="300">
-                <oxy:LineSeries Color="Blue" MarkerFill="SteelBlue"
-                                ItemsSource="{Binding Path=TrainingResultPoint}" MarkerType="Circle" 
-                                DataFieldX="X" DataFieldY="Y" />
+        <oxy:Plot Grid.Column="1" Grid.Row="1" Margin ="10 10 10 10"  LegendTitle="{Binding Path=UserName}" LegendPosition="BottomCenter"  LegendPlacement="Outside">
+            <oxy:LineSeries Color="Blue" MarkerFill="SteelBlue"
+                            ItemsSource="{Binding Path=TrainingResultPoint}" MarkerType="Circle" 
+                            DataFieldX="X" DataFieldY="Y" Title="Day to day result"/>
 
-                <oxy:LineSeries Color="DarkGreen" ItemsSource="{Binding Path=AverageSteps}" 
-                                DataFieldX="X" DataFieldY="Y" />
+            <oxy:LineSeries Color="DarkGreen" ItemsSource="{Binding Path=AverageSteps}" 
+                            DataFieldX="X" DataFieldY="Y" Title="Average Steps"/>
 
-                <oxy:LineSeries Color="Transparent" MarkerFill="DarkOrange" 
-                                MarkerType="Circle" ItemsSource="{Binding Path=MaxStepsPoints}"
-                                DataFieldX="X" DataFieldY="Y" />
-                <oxy:LineSeries Color="Transparent" MarkerFill="Purple" 
-                                MarkerType="Circle" ItemsSource="{Binding Path=MinStepsPoints}" 
-                                DataFieldX="X" DataFieldY="Y" />
-            </oxy:Plot>
-        </StackPanel>
+            <oxy:LineSeries Color="Transparent" MarkerFill="DarkOrange" 
+                            MarkerType="Circle" ItemsSource="{Binding Path=MaxStepsPoints}"
+                            DataFieldX="X" DataFieldY="Y" Title="Max steps" />
+            <oxy:LineSeries Color="Transparent" MarkerFill="Purple" 
+                            MarkerType="Circle" ItemsSource="{Binding Path=MinStepsPoints}" 
+                            DataFieldX="X" DataFieldY="Y" Title="Min steps"/>
+        </oxy:Plot>
     </Grid>
 </Window>

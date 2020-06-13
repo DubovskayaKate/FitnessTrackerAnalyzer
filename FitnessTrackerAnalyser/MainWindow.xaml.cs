@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using FitnessTrackerAnalyzer.Model;
 using FitnessTrackerAnalyzer.ViewModel;
+using Microsoft.Win32;
 
 namespace FitnessTrackerAnalyzer
 {
@@ -18,32 +20,45 @@ namespace FitnessTrackerAnalyzer
             InitializeComponent();
             DataViewModel = new UserInfoViewModel();
             DataContext = DataViewModel;
-            //DataGrid.ItemsSource = DataViewModel.Users;
-            //DataGrid.SelectedItem = DataViewModel.SelectedUser;
-
         }
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            DataViewModel.Users = UserInfoImporter.Load(new List<string>{"TestData/day1.json", "TestData/day2.json"});
-
-            //DataGrid.Items.Refresh();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "JSON file (*.json)|day*.json";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                DataViewModel.Users = UserInfoImporter
+                    .Load(openFileDialog.FileNames);
+            }
         }
 
-        private void RowCopyCommand(object sender, RoutedEventArgs e)
+        private void SaveMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            new CsvExporter().ExportData("1.csv",
-                new UserInfo
+            var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON file (*.json)|*.json|XML (*.xml)|*.xml|CSV (*.csv)|*.csv";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                var chosenExtension = Path.GetExtension(saveFileDialog.FileName);
+                IExporter exporter;
+                switch (chosenExtension)
                 {
-                    AverageSteps = 1234, Name = "Katya",
-                    BestStepResult = 4000, WorstStepResult = 123,
-                    Trainings = new List<DayTraining>
-                    {
-                        new DayTraining {Number = 1, Rank = 2, Status = "Finished", Steps = 1234},
-                        new DayTraining {Number = 2, Rank = 5, Status = "Finished", Steps = 1904},
-                    }
+                    case ".json": exporter = new JsonExporter();break;
+                    case ".xml": exporter = new XmlExporter();break;
+                    case ".csv": exporter = new CsvExporter(); break;
+                    default: exporter = new JsonExporter(); break;
+                }
 
-                });
+                if (exporter.ExportData(saveFileDialog.FileName, DataViewModel.SelectedUser))
+                {
+                    MessageBox.Show("User info have been saved");
+                }
+                else
+                {
+                    MessageBox.Show("Can't save info");
+                }
+            }
         }
     }
 
