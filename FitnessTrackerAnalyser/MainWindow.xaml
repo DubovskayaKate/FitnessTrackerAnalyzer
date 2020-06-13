@@ -29,13 +29,19 @@
             <MenuItem Header="Help" ></MenuItem>
             <MenuItem Header="About" ></MenuItem>
         </Menu>
-        <DataGrid Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False"  >
+        <DataGrid x:Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False"  
+                  SelectedItem="{Binding SelectedRow, Mode=TwoWay}" >
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True" Width="60"/>
                 <DataGridTextColumn Binding="{Binding BestStepResult}" Header="Best Result" IsReadOnly="True" Width="60"/>
                 <DataGridTextColumn Binding="{Binding WorstStepResult}" Header="Worst Result" IsReadOnly="True" Width="60"/>
                 <DataGridTextColumn Binding="{Binding AverageSteps}" Header="Average" IsReadOnly="True" Width="*"/>
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy" Name="MenuItem" Click="RowCopyCommand" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
 
         </DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">

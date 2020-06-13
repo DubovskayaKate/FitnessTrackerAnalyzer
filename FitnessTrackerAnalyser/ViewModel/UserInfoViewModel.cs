@@ -9,10 +9,11 @@ namespace FitnessTrackerAnalyzer.ViewModel
     public class UserInfoViewModel 
     {
         public List<UserInfo> Users { get; set; }
+        public UserInfo SelectedUser { get; set; }
 
         public UserInfoViewModel()
         {
-            Users = new List<UserInfo>{new UserInfo{Name = "kate"}};
+            Users = new List<UserInfo>();
         }
     }
 }
