@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,8 +9,17 @@ namespace FitnessTrackerAnalyzer.ViewModel
 {
     public class UserInfoViewModel : INotifyPropertyChanged
     {
-        private List<UserInfo> _users;
-        public List<UserInfo> Users
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private List<UserTrainingInfo> _users = new List<UserTrainingInfo>();
+        private UserTrainingInfo _selectedUserTraining;
+        private string _userName;
+        private IEnumerable<Point> _trainingResultPoint = new List<Point>();
+        private IEnumerable<Point> _maxStepPoints = new List<Point>();
+        private IEnumerable<Point> _averageSteps = new List<Point>();
+        private IEnumerable<Point> _minStepsPoints = new List<Point>();
+
+        public List<UserTrainingInfo> Users
         {
             get => _users;
             set
@@ -20,34 +28,38 @@ namespace FitnessTrackerAnalyzer.ViewModel
                 NotifyPropertyChanged();
             }
         }
-
-        private UserInfo _selectedUser;
-        public UserInfo SelectedUser
+        
+        public UserTrainingInfo SelectedUserTrainingInfo
         {
-            get => _selectedUser;
+            get => _selectedUserTraining;
             set
             {
-                _selectedUser = value;
+                _selectedUserTraining = value;
+                if (_selectedUserTraining == null) return;
                 TrainingResultPoint =
-                    _selectedUser.Trainings.Select(training => new Point(training.Number, training.Steps));
+                    _selectedUserTraining.Trainings.Select(training => new Point(training.Number, training.Steps));
 
-                var maxDayNumber = _selectedUser.Trainings.Max(item => item.Number);
-                var minDayNumber = _selectedUser.Trainings.Min(item => item.Number);
-                AverageSteps = new List<Point>{new Point{X = minDayNumber, Y = _selectedUser.AverageSteps}, 
-                    new Point{X=maxDayNumber, Y = _selectedUser.AverageSteps}};
+                var maxDayNumber = _selectedUserTraining.Trainings.Max(item => item.Number);
+                var minDayNumber = _selectedUserTraining.Trainings.Min(item => item.Number);
+                AverageSteps = new List<Point>
+                {
+                    new Point {X = minDayNumber, Y = _selectedUserTraining.AverageSteps},
+                    new Point {X = maxDayNumber, Y = _selectedUserTraining.AverageSteps}
+                };
 
-                var daysWithMaxSteps = _selectedUser.Trainings.Where(training => training.Steps == _selectedUser.Trainings.Max(y => y.Steps));
-                var daysWithMinSteps = _selectedUser.Trainings.Where(training => training.Steps == _selectedUser.Trainings.Min(y => y.Steps));
+                var daysWithMaxSteps = _selectedUserTraining.Trainings.Where(training =>
+                    training.Steps == _selectedUserTraining.Trainings.Max(y => y.Steps));
+                var daysWithMinSteps = _selectedUserTraining.Trainings.Where(training =>
+                    training.Steps == _selectedUserTraining.Trainings.Min(y => y.Steps));
 
                 MinStepsPoints =
                     daysWithMinSteps.Select(training => new Point {X = training.Number, Y = training.Steps});
                 MaxStepsPoints =
                     daysWithMaxSteps.Select(training => new Point {X = training.Number, Y = training.Steps});
-                UserName = _selectedUser.Name;
+                UserName = _selectedUserTraining.Name;
             }
         }
-
-        private string _userName = "User Name";
+        
         public string UserName
         {
             get => _userName;
@@ -57,9 +69,7 @@ namespace FitnessTrackerAnalyzer.ViewModel
                 NotifyPropertyChanged();
             }
         }
-
-        private IEnumerable<Point> _trainingResultPoint = new List<Point>();
-
+        
         public IEnumerable<Point> TrainingResultPoint
         {
             get => _trainingResultPoint;
@@ -70,7 +80,6 @@ namespace FitnessTrackerAnalyzer.ViewModel
             }
         }
 
-        private IEnumerable<Point> _averageSteps = new List<Point>();
         public IEnumerable<Point> AverageSteps
         {
             get => _averageSteps;
@@ -81,7 +90,6 @@ namespace FitnessTrackerAnalyzer.ViewModel
             }
         }
 
-        private IEnumerable<Point> _maxStepPoints = new List<Point> ();
         public IEnumerable<Point> MaxStepsPoints
         {
             get => _maxStepPoints;
@@ -92,7 +100,6 @@ namespace FitnessTrackerAnalyzer.ViewModel
             }
         }
 
-        private IEnumerable<Point> _minStepsPoints = new List<Point>();
         public IEnumerable<Point> MinStepsPoints
         {
             get => _minStepsPoints;
@@ -103,13 +110,6 @@ namespace FitnessTrackerAnalyzer.ViewModel
             }
         }
         
-        public UserInfoViewModel()
-        {
-            Users = new List<UserInfo>();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public void NotifyPropertyChanged([CallerMemberName]string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

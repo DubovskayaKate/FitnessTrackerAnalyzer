@@ -9,7 +9,7 @@
         xmlns:model="clr-namespace:FitnessTrackerAnalyzer.Model"
         xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Fitness Tracker Analyzer" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
@@ -24,14 +24,13 @@
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Height="25" VerticalAlignment="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Load data" x:Name="Load" Click="Load_Click"></MenuItem>
-                <MenuItem Header="Delete data"></MenuItem>
-                <MenuItem Header="Exit" ></MenuItem>
+                <MenuItem Header="Exit" x:Name="Exit" Click="Exit_Click"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Help" ></MenuItem>
-            <MenuItem Header="About" ></MenuItem>
+            <MenuItem Header="Help" x:Name="Help" Click="Help_Click" ></MenuItem>
+            <MenuItem Header="About" x:Name="About" Click="About_Click" ></MenuItem>
         </Menu>
         <DataGrid x:Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False" ItemsSource="{Binding Users}"  
-                  SelectedItem="{Binding SelectedUser}" >
+                  SelectedItem="{Binding SelectedUserTrainingInfo}" >
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
@@ -42,10 +41,10 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True" Width="60"/>
-                <DataGridTextColumn Binding="{Binding BestStepResult}" Header="Best Result" IsReadOnly="True" Width="60"/>
-                <DataGridTextColumn Binding="{Binding WorstStepResult}" Header="Worst Result" IsReadOnly="True" Width="60"/>
-                <DataGridTextColumn Binding="{Binding AverageSteps}" Header="Average" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Binding="{Binding BestStepResult}" Header="Best Result" IsReadOnly="True" Width="80"/>
+                <DataGridTextColumn Binding="{Binding WorstStepResult}" Header="Worst Result" IsReadOnly="True" Width="80"/>
+                <DataGridTextColumn Binding="{Binding AverageSteps}" Header="Average" IsReadOnly="True" Width="60"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
@@ -54,7 +53,12 @@
             </DataGrid.ContextMenu>
 
         </DataGrid>
-        <oxy:Plot Grid.Column="1" Grid.Row="1" Margin ="10 10 10 10"  LegendTitle="{Binding Path=UserName}" LegendPosition="BottomCenter"  LegendPlacement="Outside">
+        <oxy:Plot Grid.Column="1" Grid.Row="1" Margin ="10 10 10 10"  
+                  LegendTitle="{Binding Path=UserName}" LegendPosition="BottomCenter"  LegendPlacement="Outside">
+            <oxy:Plot.Axes>
+                <oxy:LinearAxis Position="Bottom"  Title="Day"/>
+                <oxy:LinearAxis Position="Left"  Title="Steps"/>
+            </oxy:Plot.Axes>
             <oxy:LineSeries Color="Blue" MarkerFill="SteelBlue"
                             ItemsSource="{Binding Path=TrainingResultPoint}" MarkerType="Circle" 
                             DataFieldX="X" DataFieldY="Y" Title="Day to day result"/>

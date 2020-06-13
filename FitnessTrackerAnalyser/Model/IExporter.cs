@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace FitnessTrackerAnalyzer.Model
+﻿namespace FitnessTrackerAnalyzer.Model
 {
     public interface IExporter
     {
-        bool ExportData(string fileName, UserInfo userInfo);
+        bool ExportData(string fileName, UserTrainingInfo userTrainingInfo);
     }
 }

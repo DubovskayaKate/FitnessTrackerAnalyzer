@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Documents;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace FitnessTrackerAnalyzer.Model
 {
-    public class UserInfo
+    public class UserTrainingInfo
     {
         public string Name { get; set; }
         public double AverageSteps { get; set; }
@@ -19,7 +17,7 @@ namespace FitnessTrackerAnalyzer.Model
 
         public List<DayTraining> Trainings { get; set; }
 
-        public UserInfo()
+        public UserTrainingInfo()
         {
             Trainings = new List<DayTraining>();
         }

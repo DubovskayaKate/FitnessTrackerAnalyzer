@@ -4,13 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace FitnessTrackerAnalyzer.Model
 {
     public class UserInfoImporter
     {
-        private static List<UserTrainingDescription> Load(string fileName)
+        private static List<UserDayTraining> Load(string fileName)
         {
             var regex = new Regex(@"day[0-9]+.json");
             if (!regex.IsMatch(Path.GetFileName(fileName)))
@@ -21,36 +20,36 @@ namespace FitnessTrackerAnalyzer.Model
             var strNumber = Path.GetFileName(fileName)
                 .Replace("day", String.Empty)
                 .Replace(".json", String.Empty);
-            int dayNumber = Convert.ToInt32(strNumber);
+            var dayNumber = Convert.ToInt32(strNumber);
             var content = File.ReadAllText(fileName);
-            var list = JsonConvert.DeserializeObject<List<UserTrainingDescription>>(content);
-            list.ForEach(userTrainingDescription=> userTrainingDescription.Number = dayNumber);
-            return list;
+            var userDayTrainings = JsonConvert.DeserializeObject<List<UserDayTraining>>(content);
+            userDayTrainings.ForEach(userTrainingDescription=> userTrainingDescription.Number = dayNumber);
+            return userDayTrainings;
         }
 
-        public static List<UserInfo> Load(string[] fileNames)
+        public static List<UserTrainingInfo> Load(string[] fileNames)
         {
-            var listOfTrainingDescription= new List<UserTrainingDescription>();
+            var userDayTrainingsList= new List<UserDayTraining>();
             foreach (var fileName in fileNames)
             {
-                listOfTrainingDescription.AddRange(Load(fileName));
+                userDayTrainingsList.AddRange(Load(fileName));
             }
 
-            return listOfTrainingDescription
-                .GroupBy(item => item.User)
-                .Select(group => new UserInfo
+            return userDayTrainingsList
+                .GroupBy(userTrainingDescription => userTrainingDescription.User)
+                .Select(groupTrainingByUser => new UserTrainingInfo
                 {
-                    Name = group.Key,
-                    Trainings = group.Select(tr => new DayTraining
+                    Name = groupTrainingByUser.Key,
+                    Trainings = groupTrainingByUser.Select(tr => new DayTraining
                     {
                         Number = tr.Number,
                         Rank = tr.Rank,
                         Status = tr.Status,
                         Steps = tr.Steps
                     }).ToList(),
-                    AverageSteps = group.Select(tr => tr.Steps).Average(),
-                    BestStepResult = group.Select(tr => tr.Steps).Max(),
-                    WorstStepResult = group.Select(tr => tr.Steps).Min()
+                    AverageSteps = groupTrainingByUser.Select(tr => tr.Steps).Average(),
+                    BestStepResult = groupTrainingByUser.Select(tr => tr.Steps).Max(),
+                    WorstStepResult = groupTrainingByUser.Select(tr => tr.Steps).Min()
 
                 }).ToList();
         }

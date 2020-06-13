@@ -1,6 +1,6 @@
 ﻿namespace FitnessTrackerAnalyzer.Model
 {
-    public class UserTrainingDescription
+    public class UserDayTraining
     {
         public int Rank { get; set; }
         public string Status { get; set; }

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 using Newtonsoft.Json;
 
 namespace FitnessTrackerAnalyzer.Model
 {
     public class JsonExporter : IExporter
     {
-        public bool ExportData(string filePath, UserInfo userInfo)
+        public bool ExportData(string filePath, UserTrainingInfo userTrainingInfo)
         {
-            var json = JsonConvert.SerializeObject(userInfo);
+            var json = JsonConvert.SerializeObject(userTrainingInfo);
             try
             {
                 File.WriteAllText(filePath, json);

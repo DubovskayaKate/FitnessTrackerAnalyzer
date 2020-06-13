@@ -6,14 +6,14 @@ namespace FitnessTrackerAnalyzer.Model
 {
     public class CsvExporter : IExporter
     {
-        public bool ExportData(string fileName, UserInfo userInfo)
+        public bool ExportData(string fileName, UserTrainingInfo userTrainingInfo)
         {
-            var generalInfo = $"User,{userInfo.Name}\n Average Steps,{userInfo.AverageSteps}\n" +
-                              $"Best Step Result,{userInfo.BestStepResult}\nWorth Step Result,{userInfo.WorstStepResult}\n";
+            var generalInfo = $"User,{userTrainingInfo.Name}\nAverage Steps,{userTrainingInfo.AverageSteps}\n" +
+                              $"Best Step Result,{userTrainingInfo.BestStepResult}\nWorth Step Result,{userTrainingInfo.WorstStepResult}\n";
             var trainingHeader = $"Day,Rang,Status,Steps\n";
             var dayToDayInfo = string
                 .Join("\n",
-                    userInfo.Trainings
+                    userTrainingInfo.Trainings
                         .OrderBy(training => training.Number)
                         .Select(training => $"Day{training.Number},{training.Rank},{training.Status},{training.Steps}"));
             try
