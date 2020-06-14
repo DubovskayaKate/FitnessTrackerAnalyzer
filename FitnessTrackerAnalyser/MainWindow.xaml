@@ -19,11 +19,11 @@
 
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Height="25" VerticalAlignment="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Load data" x:Name="Load" Click="Load_Click"/>
-                <MenuItem Header="Exit" x:Name="Exit" Click="Exit_Click"/>
+                <MenuItem Header="Load data" Click="Load_Click"/>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
-            <MenuItem Header="Help" x:Name="Help" Click="Help_Click"/>
-            <MenuItem Header="About" x:Name="About" Click="About_Click"/>
+            <MenuItem Header="Help" Click="Help_Click"/>
+            <MenuItem Header="About" Click="About_Click"/>
         </Menu>
         <DataGrid x:Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False" ItemsSource="{Binding Users}"  
                   SelectedItem="{Binding SelectedUserTrainingInfo}">
@@ -44,7 +44,7 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Save" Name="SaveMenuItem" Click="SaveMenuItem_Click"/>
+                    <MenuItem Header="Save" Click="SaveMenuItem_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
 

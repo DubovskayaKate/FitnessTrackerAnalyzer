@@ -2,8 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:FitnessTrackerAnalyzer"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <system:String x:Key="HelpMessage" xml:space="preserve">
+            1) Load Data - File->Load Data. If load data two times, last loaded data will be used
+            2) File name - Must be in format day[anyNumber].json
+            3) Show User Training Plot - Select row with the user
+            4) Users marked with green color have the difference between average steps and best or worst result more than 20%
+        </system:String>
+        <system:String x:Key="AboutMessage" xml:space="preserve">The program collects and process user training info, shows it using plot and grid, exports user day-to-day training  to Json, Xml, Csv
+            @Copyright Dubovskaya Kate, 2020</system:String>
     </Application.Resources>
 </Application>

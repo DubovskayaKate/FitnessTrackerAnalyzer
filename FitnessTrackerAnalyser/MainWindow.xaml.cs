@@ -62,18 +62,12 @@ namespace FitnessTrackerAnalyzer
 
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                "1) Load Data - File->Load Data. If load data two times, last loaded data will be used\n" +
-                "2) File name - Must be in format day[anyNumber].json\n" +
-                "3) Show User Training Plot - Select row with the user\n" +
-                "4) Users marked with green color have the difference between average steps and best or worst result more than 20%", 
-                "Fitness Tracker Analyzer");
+            MessageBox.Show((string) Application.Current.FindResource("HelpMessage"), "Fitness Tracker Analyzer");
         }
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("The program collects and process user training info, shows it using plot and grid, exports user day-to-day training  to Json, Xml, Csv\n" +
-                            "@Copyright Dubovskaya Kate, 2020", "Fitness Tracker Analyzer");
+            MessageBox.Show((string)Application.Current.FindResource("AboutMessage"), "Fitness Tracker Analyzer");
         }
     }
 
