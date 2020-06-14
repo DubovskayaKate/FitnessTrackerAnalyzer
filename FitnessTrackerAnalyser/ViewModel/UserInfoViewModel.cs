@@ -111,11 +111,11 @@ namespace FitnessTrackerAnalyzer.ViewModel
             };
 
             var daysWithMaxSteps = _selectedUserTraining.Trainings
-                .Where(training => 
-                    training.Steps == _selectedUserTraining.Trainings.Max(y => y.Steps));
+                .Where(training => training.Steps == _selectedUserTraining.Trainings.Max(y => y.Steps)
+            );
             var daysWithMinSteps = _selectedUserTraining.Trainings
-                .Where(training =>
-                    training.Steps == _selectedUserTraining.Trainings.Min(y => y.Steps));
+                .Where(training => training.Steps == _selectedUserTraining.Trainings.Min(y => y.Steps)
+            );
 
             MinStepsPoints = daysWithMinSteps
                 .Select(training => new Point { X = training.Number, Y = training.Steps });

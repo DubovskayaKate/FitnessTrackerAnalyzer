@@ -6,12 +6,12 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <system:String x:Key="HelpMessage" xml:space="preserve">
-            1) Load Data - File->Load Data. If load data two times, last loaded data will be used
-            2) File name - Must be in format day[anyNumber].json
-            3) Show User Training Plot - Select row with the user
-            4) Users marked with green color have the difference between average steps and best or worst result more than 20%
+            1) To load data: File -> Load Data. If you load data two times, latest will be used;
+            2) File name for loading: Must be in format day[number].json, example: day17.json;
+            3) To show training plot: Select data grid row for user you need to display;
+            4) Rows for users who have more than 20% difference between average &amp; best or worst result are green;
         </system:String>
-        <system:String x:Key="AboutMessage" xml:space="preserve">The program collects and process user training info, shows it using plot and grid, exports user day-to-day training  to Json, Xml, Csv
+        <system:String x:Key="AboutMessage" xml:space="preserve">The program collects user training info, plots it, exports data to JSON, XML, CSV;
             @Copyright Dubovskaya Kate, 2020</system:String>
     </Application.Resources>
 </Application>

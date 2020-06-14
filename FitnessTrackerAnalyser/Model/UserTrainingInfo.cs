@@ -23,6 +23,5 @@ namespace FitnessTrackerAnalyzer.Model
         }
 
         public List<DayTraining> Trainings { get; set; } = new List<DayTraining>();
-
     }
 }

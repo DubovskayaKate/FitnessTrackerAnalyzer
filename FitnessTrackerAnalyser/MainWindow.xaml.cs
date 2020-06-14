@@ -41,8 +41,10 @@ namespace FitnessTrackerAnalyzer
 
         private void SaveMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = SaveDialogFilter;
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = SaveDialogFilter
+            };
 
             if (saveFileDialog.ShowDialog() == true)
             {
@@ -70,5 +72,4 @@ namespace FitnessTrackerAnalyzer
             MessageBox.Show((string)Application.Current.FindResource("AboutMessage"), "Fitness Tracker Analyzer");
         }
     }
-
 }

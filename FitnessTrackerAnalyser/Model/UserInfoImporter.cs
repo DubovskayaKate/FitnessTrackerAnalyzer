@@ -40,21 +40,25 @@ namespace FitnessTrackerAnalyzer.Model
             foreach (var fileName in fileNames)
             {
                 if (Load(fileName, out List<UserDayTraining> trainings))
+                {
                     userDayTrainingsList.AddRange(trainings);
+                }
                 else
+                {
                     incorrectFileNames.Add(fileName);
+                }
             }
 
             if (incorrectFileNames.Count != 0)
             {
-                var result = MessageBox.Show("All file loaded except " + 
-                                string.Join(", ", 
-                                    incorrectFileNames.Select(filename => Path.GetFileName(filename)))
-                                + ". Continue only with loaded files?",
-                        "Fitness Tracker Analyzer", 
-                                MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.No)
-                    return new List<UserTrainingInfo>();
+                var message = 
+                    "All file loaded except " 
+                    + string.Join(", ", incorrectFileNames.Select(filename => Path.GetFileName(filename)))
+                    + ". Continue only with loaded files?";
+                var header = "Fitness Tracker Analyzer";
+                var result = MessageBox.Show(message, header, MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.No) return new List<UserTrainingInfo>();
             }
 
             return userDayTrainingsList

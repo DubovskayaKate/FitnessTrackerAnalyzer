@@ -18,7 +18,6 @@ namespace FitnessTrackerAnalyzer.Model
                 // Ignore
                 return false;
             }
-            
         }
     }
 }
