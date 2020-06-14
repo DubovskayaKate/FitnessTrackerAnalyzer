@@ -7,30 +7,29 @@ using Microsoft.Win32;
 
 namespace FitnessTrackerAnalyzer
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private const string OpenDialogFilter = "JSON file (*.json)|day*.json";
         private const string SaveDialogFilter = "JSON file (*.json)|*.json|XML (*.xml)|*.xml|CSV (*.csv)|*.csv";
-        private UserInfoViewModel DataViewModel { get; set; }
+        private UserInfoViewModel ViewModel { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            DataViewModel = new UserInfoViewModel();
-            DataContext = DataViewModel;
+            ViewModel = new UserInfoViewModel();
+            DataContext = ViewModel;
         }
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Multiselect = true;
-            openFileDialog.Filter = OpenDialogFilter;
+            var openFileDialog = new OpenFileDialog
+            {
+                Multiselect = true, 
+                Filter = OpenDialogFilter
+            };
             if (openFileDialog.ShowDialog() == true)
             {
-                DataViewModel.Users = UserInfoImporter
+                ViewModel.Users = UserInfoImporter
                     .Load(openFileDialog.FileNames);
             }
         }
@@ -44,26 +43,20 @@ namespace FitnessTrackerAnalyzer
         {
             var saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = SaveDialogFilter;
+
             if (saveFileDialog.ShowDialog() == true)
             {
                 var chosenExtension = Path.GetExtension(saveFileDialog.FileName);
-                IExporter exporter;
-                switch (chosenExtension)
+                IExporter exporter = chosenExtension switch
                 {
-                    case ".json": exporter = new JsonExporter();break;
-                    case ".xml": exporter = new XmlExporter();break;
-                    case ".csv": exporter = new CsvExporter(); break;
-                    default: exporter = new JsonExporter(); break;
-                }
+                    ".json" => new JsonExporter(),
+                    ".xml" => new XmlExporter(),
+                    ".csv" => new CsvExporter(),
+                    _ => new JsonExporter()
+                };
 
-                if (exporter.ExportData(saveFileDialog.FileName, DataViewModel.SelectedUserTrainingInfo))
-                {
-                    MessageBox.Show("User info have been saved");
-                }
-                else
-                {
-                    MessageBox.Show("Couldn't save info");
-                }
+                var exportResult = exporter.ExportData(saveFileDialog.FileName, ViewModel.SelectedUserTrainingInfo);
+                MessageBox.Show(exportResult ? "User info have been saved" : "Couldn't save info");
             }
         }
 

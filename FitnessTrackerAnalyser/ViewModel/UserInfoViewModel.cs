@@ -35,28 +35,7 @@ namespace FitnessTrackerAnalyzer.ViewModel
             set
             {
                 _selectedUserTraining = value;
-                if (_selectedUserTraining == null) return;
-                TrainingResultPoint =
-                    _selectedUserTraining.Trainings.Select(training => new Point(training.Number, training.Steps));
-
-                var maxDayNumber = _selectedUserTraining.Trainings.Max(item => item.Number);
-                var minDayNumber = _selectedUserTraining.Trainings.Min(item => item.Number);
-                AverageSteps = new List<Point>
-                {
-                    new Point {X = minDayNumber, Y = _selectedUserTraining.AverageSteps},
-                    new Point {X = maxDayNumber, Y = _selectedUserTraining.AverageSteps}
-                };
-
-                var daysWithMaxSteps = _selectedUserTraining.Trainings.Where(training =>
-                    training.Steps == _selectedUserTraining.Trainings.Max(y => y.Steps));
-                var daysWithMinSteps = _selectedUserTraining.Trainings.Where(training =>
-                    training.Steps == _selectedUserTraining.Trainings.Min(y => y.Steps));
-
-                MinStepsPoints =
-                    daysWithMinSteps.Select(training => new Point {X = training.Number, Y = training.Steps});
-                MaxStepsPoints =
-                    daysWithMaxSteps.Select(training => new Point {X = training.Number, Y = training.Steps});
-                UserName = _selectedUserTraining.Name;
+                SetSelectedUserTrainingInfo();
             }
         }
         
@@ -113,6 +92,37 @@ namespace FitnessTrackerAnalyzer.ViewModel
         public void NotifyPropertyChanged([CallerMemberName]string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+
+        private void SetSelectedUserTrainingInfo()
+        {
+            if (_selectedUserTraining == null) return;
+
+            TrainingResultPoint =  _selectedUserTraining.Trainings
+                .Select(training => new Point(training.Number, training.Steps));
+
+            var maxDayNumber = _selectedUserTraining.Trainings.Max(item => item.Number);
+            var minDayNumber = _selectedUserTraining.Trainings.Min(item => item.Number);
+
+            AverageSteps = new List<Point>
+            {
+                new Point {X = minDayNumber, Y = _selectedUserTraining.AverageSteps},
+                new Point {X = maxDayNumber, Y = _selectedUserTraining.AverageSteps}
+            };
+
+            var daysWithMaxSteps = _selectedUserTraining.Trainings
+                .Where(training => 
+                    training.Steps == _selectedUserTraining.Trainings.Max(y => y.Steps));
+            var daysWithMinSteps = _selectedUserTraining.Trainings
+                .Where(training =>
+                    training.Steps == _selectedUserTraining.Trainings.Min(y => y.Steps));
+
+            MinStepsPoints = daysWithMinSteps
+                .Select(training => new Point { X = training.Number, Y = training.Steps });
+            MaxStepsPoints = daysWithMaxSteps
+                .Select(training => new Point { X = training.Number, Y = training.Steps });
+
+            UserName = _selectedUserTraining.Name;
         }
     }
 }

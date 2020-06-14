@@ -3,36 +3,58 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 using Newtonsoft.Json;
 
 namespace FitnessTrackerAnalyzer.Model
 {
     public class UserInfoImporter
     {
-        private static List<UserDayTraining> Load(string fileName)
+        private static bool Load(string fileName, out List<UserDayTraining> loadedTrainings)
         {
             var regex = new Regex(@"day[0-9]+.json");
             if (!regex.IsMatch(Path.GetFileName(fileName)))
             {
-                throw new Exception();
+                loadedTrainings = new List<UserDayTraining>();
+                return false;
             }
 
             var strNumber = Path.GetFileName(fileName)
                 .Replace("day", String.Empty)
                 .Replace(".json", String.Empty);
+
             var dayNumber = Convert.ToInt32(strNumber);
             var content = File.ReadAllText(fileName);
             var userDayTrainings = JsonConvert.DeserializeObject<List<UserDayTraining>>(content);
-            userDayTrainings.ForEach(userTrainingDescription=> userTrainingDescription.Number = dayNumber);
-            return userDayTrainings;
+
+            userDayTrainings.ForEach(userTrainingDescription => userTrainingDescription.Number = dayNumber);
+
+            loadedTrainings = userDayTrainings;
+            return true;
         }
 
         public static List<UserTrainingInfo> Load(string[] fileNames)
         {
             var userDayTrainingsList= new List<UserDayTraining>();
+            var incorrectFileNames = new List<string>();
             foreach (var fileName in fileNames)
             {
-                userDayTrainingsList.AddRange(Load(fileName));
+                if (Load(fileName, out List<UserDayTraining> trainings))
+                    userDayTrainingsList.AddRange(trainings);
+                else
+                    incorrectFileNames.Add(fileName);
+            }
+
+            if (incorrectFileNames.Count != 0)
+            {
+                var result = MessageBox.Show("All file loaded except " + 
+                                string.Join(", ", 
+                                    incorrectFileNames.Select(filename => Path.GetFileName(filename)))
+                                + ". Continue only with loaded files?",
+                        "Fitness Tracker Analyzer", 
+                                MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.No)
+                    return new List<UserTrainingInfo>();
             }
 
             return userDayTrainingsList
@@ -40,13 +62,15 @@ namespace FitnessTrackerAnalyzer.Model
                 .Select(groupTrainingByUser => new UserTrainingInfo
                 {
                     Name = groupTrainingByUser.Key,
-                    Trainings = groupTrainingByUser.Select(tr => new DayTraining
-                    {
-                        Number = tr.Number,
-                        Rank = tr.Rank,
-                        Status = tr.Status,
-                        Steps = tr.Steps
-                    }).ToList(),
+                    Trainings = groupTrainingByUser
+                        .Select(tr => new DayTraining
+                        {
+                            Number = tr.Number,
+                            Rank = tr.Rank,
+                            Status = tr.Status,
+                            Steps = tr.Steps
+                        })
+                        .ToList(),
                     AverageSteps = groupTrainingByUser.Select(tr => tr.Steps).Average(),
                     BestStepResult = groupTrainingByUser.Select(tr => tr.Steps).Max(),
                     WorstStepResult = groupTrainingByUser.Select(tr => tr.Steps).Min()

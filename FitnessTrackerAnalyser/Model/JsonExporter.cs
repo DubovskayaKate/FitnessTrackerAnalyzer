@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Newtonsoft.Json;
 
 namespace FitnessTrackerAnalyzer.Model
@@ -14,8 +13,9 @@ namespace FitnessTrackerAnalyzer.Model
                 File.WriteAllText(filePath, json);
                 return true;
             }
-            catch (Exception)
+            catch
             {
+                // Ignore
                 return false;
             }
             

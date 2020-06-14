@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 
 namespace FitnessTrackerAnalyzer.Model
@@ -8,12 +7,14 @@ namespace FitnessTrackerAnalyzer.Model
     {
         public bool ExportData(string fileName, UserTrainingInfo userTrainingInfo)
         {
-            var generalInfo = $"User,{userTrainingInfo.Name}\nAverage Steps,{userTrainingInfo.AverageSteps}\n" +
-                              $"Best Step Result,{userTrainingInfo.BestStepResult}\nWorth Step Result,{userTrainingInfo.WorstStepResult}\n";
+            var generalInfo = $"User,{userTrainingInfo.Name}\n" +
+                              $"Average Steps,{userTrainingInfo.AverageSteps}\n" +
+                              $"Best Step Result,{userTrainingInfo.BestStepResult}\n" +
+                              $"Worth Step Result,{userTrainingInfo.WorstStepResult}\n";
+
             var trainingHeader = $"Day,Rang,Status,Steps\n";
-            var dayToDayInfo = string
-                .Join("\n",
-                    userTrainingInfo.Trainings
+
+            var dayToDayInfo = string.Join("\n", userTrainingInfo.Trainings
                         .OrderBy(training => training.Number)
                         .Select(training => $"Day{training.Number},{training.Rank},{training.Status},{training.Steps}"));
             try
@@ -21,8 +22,9 @@ namespace FitnessTrackerAnalyzer.Model
                 File.WriteAllText(fileName, generalInfo + trainingHeader + dayToDayInfo );
                 return true;
             }
-            catch (Exception)
+            catch
             {
+                // Ignore
                 return false;
             }
 

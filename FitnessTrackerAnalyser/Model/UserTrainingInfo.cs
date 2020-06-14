@@ -13,13 +13,16 @@ namespace FitnessTrackerAnalyzer.Model
 
         [XmlIgnore]
         [JsonIgnore]
-        public bool ShouldHighlight => AverageSteps * 1.2 < BestStepResult || AverageSteps * 0.8 > WorstStepResult;
-
-        public List<DayTraining> Trainings { get; set; }
-
-        public UserTrainingInfo()
+        public bool ShouldHighlight
         {
-            Trainings = new List<DayTraining>();
+            get
+            {
+                return AverageSteps * 1.2 < BestStepResult 
+                       || AverageSteps * 0.8 > WorstStepResult;
+            }
         }
+
+        public List<DayTraining> Trainings { get; set; } = new List<DayTraining>();
+
     }
 }

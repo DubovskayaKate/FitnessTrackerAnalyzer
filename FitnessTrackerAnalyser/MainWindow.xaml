@@ -4,38 +4,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FitnessTrackerAnalyzer"
-        xmlns:collections="clr-namespace:System.Collections;assembly=System.Runtime.Extensions"
-        xmlns:model="clr-namespace:FitnessTrackerAnalyzer.Model"
-        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
         mc:Ignorable="d"
         Title="Fitness Tracker Analyzer" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Height="25" VerticalAlignment="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Load data" x:Name="Load" Click="Load_Click"></MenuItem>
-                <MenuItem Header="Exit" x:Name="Exit" Click="Exit_Click"></MenuItem>
+                <MenuItem Header="Load data" x:Name="Load" Click="Load_Click"/>
+                <MenuItem Header="Exit" x:Name="Exit" Click="Exit_Click"/>
             </MenuItem>
-            <MenuItem Header="Help" x:Name="Help" Click="Help_Click" ></MenuItem>
-            <MenuItem Header="About" x:Name="About" Click="About_Click" ></MenuItem>
+            <MenuItem Header="Help" x:Name="Help" Click="Help_Click"/>
+            <MenuItem Header="About" x:Name="About" Click="About_Click"/>
         </Menu>
         <DataGrid x:Name="DataGrid" Grid.Column="0" Grid.Row="1" Margin ="10 10 10 10" AutoGenerateColumns="False" ItemsSource="{Binding Users}"  
-                  SelectedItem="{Binding SelectedUserTrainingInfo}" >
+                  SelectedItem="{Binding SelectedUserTrainingInfo}">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ShouldHighlight}" Value="true">
-                            <Setter Property="Background" Value="YellowGreen"></Setter>
+                            <Setter Property="Background" Value="YellowGreen"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -48,7 +44,7 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Save" Name="SaveMenuItem" Click="SaveMenuItem_Click" />
+                    <MenuItem Header="Save" Name="SaveMenuItem" Click="SaveMenuItem_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
 
@@ -69,6 +65,7 @@
             <oxy:LineSeries Color="Transparent" MarkerFill="DarkOrange" 
                             MarkerType="Circle" ItemsSource="{Binding Path=MaxStepsPoints}"
                             DataFieldX="X" DataFieldY="Y" Title="Max steps" />
+
             <oxy:LineSeries Color="Transparent" MarkerFill="Purple" 
                             MarkerType="Circle" ItemsSource="{Binding Path=MinStepsPoints}" 
                             DataFieldX="X" DataFieldY="Y" Title="Min steps"/>

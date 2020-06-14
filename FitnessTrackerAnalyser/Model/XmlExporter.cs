@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml.Serialization;
 
 namespace FitnessTrackerAnalyzer.Model
@@ -19,8 +18,9 @@ namespace FitnessTrackerAnalyzer.Model
 
                 return true;
             }
-            catch (Exception)
+            catch 
             {
+                // Ignore
                 return false;
             }
         }
